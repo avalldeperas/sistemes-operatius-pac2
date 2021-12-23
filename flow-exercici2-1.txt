@@ -1,0 +1,18 @@
+
+fork == 0 == (!fork()) --> Child (0)
+fork != 0 == (fork())  --> Parent (PID child)
+
+if (fork()) {       // != 0 true (parent) -- PARENT goes in / CH1 jumps else l12
+  if (!fork()) {    // == 0 true (child) -- CH2 goes in / PARENT jump else l9
+    fork();         // CH2 creates GC1
+    write(0,“1“,1); // CH2 prints 1 (#1), GC1 prints 1 (#2)
+  } else {
+    write(0,“2“,1); // PARENT prints 2 (#3)
+  }
+} else {
+  write(0,“3“,1); // CH1 prints 3 (#4)
+}
+write(0,“4“,1); //PARENT, CH1, CH2, GC1 prints 4 (#5, #6, #7, #8)
+return 0;
+
+// 8 PRINTS:  32414144

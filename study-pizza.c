@@ -7,27 +7,28 @@
 #include <semaphore.h>
 
 int slices = 0;
-/* Codi a omplir */
+Sem sem1 = 0;
 Sem mutex = 1;
-bool first = true;
-bool havePizza = false;
+bool first = true, havePizza = false;
 
 estudiants() {
-  while(TRUE) {
-    wait(mutex);
+  while(TRUE) { // mutex -
+    wait(mutex);      // "Albert", "Fermi", "Marc"
+
     while( !havePizza ) {
-      if( slices > 0 ) {
+      if( slices > 0 ) {              // eat pizza
         slices--;
         havePizza = true;
       } else {
         if( first ) {
-          /* Codi a omplir */
           first = false;
+          signal(sem1);               // ask for pizza
         }
-        /* Codi a omplir */
+        wait(mutex);                  // wait for pizza
       }
+
     } // end while !havePizza
-    /* Codi a omplir */
+    signal(mutex);
     Study();
     havePizza = false;
   }
@@ -35,17 +36,17 @@ estudiants() {
 
 lliurament_de_pizzes() {
   while(TRUE) {
-    /* Codi a omplir */
+    wait(sem1);                     // wait for student call
     makePizza();
     slices = S;
     first=true;
-    /* Codi a omplir*/
-    signal(mutex);
+    havePizza = false;              // reset havePizza
+    signal(mutex);                  // deliver pizza
   }
 }
 
 
 int main (int argc, char *argv[])
 {
-
+    
 }
